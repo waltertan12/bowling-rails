@@ -11,9 +11,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20160127202720) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "frames", force: :cascade do |t|
+    t.integer  "game_id",                     null: false
+    t.integer  "frame_number",                null: false
+    t.integer  "num_rolls",      default: 0
+    t.integer  "pins_remaining"
+    t.string   "history",        default: [],              array: true
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
+  add_index "frames", ["game_id"], name: "index_frames_on_game_id", using: :btree
+
+  create_table "games", force: :cascade do |t|
+    t.integer  "num_frames", default: 0
+    t.integer  "num_rolls",  default: 0
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "rolls", force: :cascade do |t|
+    t.integer  "pins"
+    t.integer  "roll_number", null: false
+    t.integer  "game_id",     null: false
+    t.integer  "frame_id",    null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "rolls", ["frame_id"], name: "index_rolls_on_frame_id", using: :btree
+  add_index "rolls", ["game_id"], name: "index_rolls_on_game_id", using: :btree
 
 end
