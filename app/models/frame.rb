@@ -41,29 +41,9 @@ class Frame < ActiveRecord::Base
     (rolls[0].pins + rolls[1].pins == 10)
   end
 
-  def can_bowl_extra_frame?
-    frame_number == 10 && (
-      strike? ||
-      spare? ||
-      (rolls.length == 2 && rolls[0].pins + rolls[1].pins >= 10)
-    )
-  end
-
   def score
     return score_final if frame_number == 10
     score_normal
-  end
-
-  def last_roll_number
-    last_roll = rolls.last
-    last_roll.roll_number if last_roll
-  end
-
-  def get_next_rolls(num)
-    self.game.rolls.select do |roll|
-      roll.roll_number > last_roll_number &&
-      roll.roll_number <= (last_roll_number + num)
-    end.map { |r| r.pins }
   end
 
   def complete?
@@ -109,15 +89,28 @@ class Frame < ActiveRecord::Base
     end
   end
 
-  def next_frames(num)
-    self.games.frames.map do |frame|
-      frame.frame_number > frame_number && 
-      frame.frame_number <= (frame_number + num)
-    end
-  end
-
   def reset_pins
     self.pins_remaining = 10
     self.save
+  end
+
+  def get_next_rolls(num)
+    self.game.rolls.select do |roll|
+      roll.roll_number > last_roll_number &&
+      roll.roll_number <= (last_roll_number + num)
+    end.map { |r| r.pins }
+  end
+
+  def last_roll_number
+    last_roll = rolls.last
+    last_roll.roll_number if last_roll
+  end
+
+  def can_bowl_extra_frame?
+    frame_number == 10 && (
+      strike? ||
+      spare? ||
+      (rolls.length == 2 && rolls[0].pins + rolls[1].pins >= 10)
+    )
   end
 end

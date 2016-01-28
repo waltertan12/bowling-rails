@@ -25,18 +25,23 @@ class Game < ActiveRecord::Base
 
   def bowl(options = {})
     raise 'Game Over' if over?
+
     self.num_rolls += 1
+
     if !current_frame || current_frame.complete?
-      puts "making a new frame when on Frame Number #{num_frames}" if num_frames > 8
       self.num_frames += 1
+      
       new_frame = Frame.new(
         game_id: id, 
         frame_number: num_frames, 
         pins_remaining: 10
       )
+
       self.frames << new_frame
     end
+
     self.save
+
     current_frame.bowl(options)
   end
 
