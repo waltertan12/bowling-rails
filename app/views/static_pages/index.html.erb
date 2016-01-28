@@ -64,6 +64,7 @@
 
     bowlButton.addEventListener('click', (e) => {
       e.preventDefault();
+      if (typeof game === 'undefined') newGame(assignGame);
       bowl(game.id, actuate);
     }, false);
 
@@ -75,9 +76,9 @@
 
 </script>
 <h1>Bowling</h1>
-<button id='new-game-button'>New Game</button>
-<button id='bowl-button'>Bowl</button>
-<button id='strike-button'>Strike</button>
+<button id='new-game-button' class='btn btn-primary'>New Game</button>
+<button id='bowl-button' class='btn btn-success'>Bowl</button>
+<button id='strike-button' class='btn btn-info'>Strike</button>
 <ul id='frames' style=' padding: none;'>
 </ul>
 

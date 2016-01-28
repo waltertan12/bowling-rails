@@ -20,3 +20,4 @@ json.frames game.frames, partial: 'frame', as: :frame
 json.pins_removed  pins_removed
 json.scores game.scores
 json.total_score total_score
+json.over game.over?
