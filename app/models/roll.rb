@@ -20,16 +20,12 @@ class Roll < ActiveRecord::Base
   validates :game_id, :frame_id, presence: true
 
   def bowl(pins_remaining, options)
-    puts 'Roll#bowl'
     case options[:bowling]
     when nil
-      puts 'Nil case'
       self.pins = rand(pins_remaining + 1)
-    when :strike
-      puts 'Strike case'
+    when 'strike'
       self.pins = pins_remaining
-    when :custom
-      puts 'Custom case'
+    when 'custom'
       if options[:to_remove] > pins_remaining
         self.pins = pins_remaining
       else
@@ -37,7 +33,7 @@ class Roll < ActiveRecord::Base
       end
     end
     self.save
-    
+
     self.pins
   end
 end

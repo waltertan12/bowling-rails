@@ -10,8 +10,8 @@
 #
 
 class Game < ActiveRecord::Base
-  has_many :frames
-  has_many :rolls
+  has_many :frames, -> { order(frame_number: :asc)}
+  has_many :rolls, -> { order(roll_number: :asc)}
 
   def scores
     self.frames.map do |f|

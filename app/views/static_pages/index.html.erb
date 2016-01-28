@@ -1,2 +1,69 @@
-<h1>StaticPages#index</h1>
-<p>Find me in app/views/static_pages/index.html.erb</p>
+<script type="text/javascript">
+  const newGame = (callback) => {
+      $.ajax({
+      url: '/api/games/',
+      method: 'POST',
+      success: (data) => {
+        callback(data);
+      },
+      error: (e) => {
+        console.log(e.response_json);
+      }
+    });
+  };
+  const bowl = (id, callback, option) => {
+    $.ajax({
+      url: '/api/games/bowl',
+      method: 'POST',
+      data: {
+        game: {
+          id: id,
+          bowling: option
+        }
+      },
+      success: (data) => {
+        callback(data);
+      },
+      error: (e) => {
+        console.log(e.response_json);
+      }
+    });
+  };
+  document.addEventListener('DOMContentLoaded', (e) => {
+    var game;
+    var score = document.getElementById('score');
+    var bowlButton = document.getElementById('bowl-button');
+    var strikeButton = document.getElementById('strike-button');
+    var newGameButton = document.getElementById('new-game-button');
+
+    var actuate = (data) => {
+      document.getElementById('score').innerHTML = data.total_score;
+    };
+
+    var assignGame = (newGame) => {
+      game = newGame;
+      actuate(newGame);
+    };
+
+    newGameButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      newGame(assignGame);
+    }, false);
+
+    bowlButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      bowl(game.id, actuate);
+    }, false);
+
+    strikeButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      bowl(game.id, actuate, 'strike');
+    }, false);
+  }, false);
+
+</script>
+<h1>Bowling</h1>
+<button id='new-game-button'>New Game</button>
+<button id='bowl-button'>Bowl</button>
+<button id='strike-button'>Strike</button>
+<div id='score'></div>
