@@ -70,7 +70,8 @@ class Frame < ActiveRecord::Base
     if frame_number < 10
       strike? || spare? || num_rolls == 2
     else
-      num_rolls == 3 && !can_bowl_extra_frame?
+      (num_rolls == 2 && !can_bowl_extra_frame?) ||
+      (num_rolls == 3)
     end
   end
 

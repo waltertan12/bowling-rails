@@ -31,13 +31,25 @@
   };
   document.addEventListener('DOMContentLoaded', (e) => {
     var game;
+    var frame = document.getElementById('frame');
+    // var frames = document.getElementById('frames');
     var score = document.getElementById('score');
     var bowlButton = document.getElementById('bowl-button');
     var strikeButton = document.getElementById('strike-button');
     var newGameButton = document.getElementById('new-game-button');
 
     var actuate = (data) => {
-      document.getElementById('score').innerHTML = data.total_score;
+      var frames = document.getElementById('frames');
+      frames.innerHTML = '';
+      var clone;
+      for (var i = 0; i < data.total_score.length; i++) {
+        clone = document.importNode(frame, true);
+        console.log(clone.children)
+        clone.content.children[0].children[0].innerText = 'Frame Number: ' + (i + 1);
+        clone.content.children[0].children[1].innerText = 'Score: ' + (data.total_score[i]);
+        clone.content.children[0].children[2].innerText = 'Rolls: ' + (data.frames[i].rolls);
+        frames.appendChild(clone.content);
+      }
     };
 
     var assignGame = (newGame) => {
@@ -66,4 +78,13 @@
 <button id='new-game-button'>New Game</button>
 <button id='bowl-button'>Bowl</button>
 <button id='strike-button'>Strike</button>
-<div id='score'></div>
+<ul id='frames' style=' padding: none;'>
+</ul>
+
+<template id='frame'>
+  <li style='border: 1px solid #000; list-style-type: none; padding: none;'>
+    <div></div>
+    <div></div>
+    <div></div>
+  </li>
+</template>
