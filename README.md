@@ -1,4 +1,4 @@
-# Bowling on Rails
+# [Bowling on Rails](http://bowling-game-api.herokuapp.com)
 Very, very simple bowling app.
 
 ### Routing
